@@ -1,14 +1,14 @@
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var http = require('https').Server(app);
+var io = require('socket.io')(https);
 var Entities = require('html-entities').AllHtmlEntities;
 var entities = new Entities();
 
 var BattleshipGame = require('./app/game.js');
 var GameStatus = require('./app/gameStatus.js');
 
-var port = 8900;
+var port = 3300;
 
 var users = {};
 var gameIdCounter = 1;
