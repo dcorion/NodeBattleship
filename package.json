@@ -1,10 +1,6 @@
 {
   "name": "NodeBattleship",
   "version": "0.0.1",
-  "appScripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "description": "Multiplayer Battleship with NodeJS and Socket.io",
   "author": {
     "name": "Christian Nilsson"
@@ -21,7 +17,8 @@
   },
   "scripts": {
   "test": "jest",
-  "coverage": "jest --coverage"
+  "coverage": "jest --coverage",
+  "start": "node index.js"
 },
 "jest": {
   "collectCoverage": true,
