@@ -3,8 +3,8 @@ name: Deploy
 on:
   push:
     branches:
-      - master    
-
+      - master
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,6 +15,8 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       
+      - name: checout
+        uses: actions/checkout@v2
       - name: Release
         id: create_release
         if: steps.autotagger.outputs.tagname != ''
@@ -28,8 +30,6 @@ jobs:
           draft: false
           prerelease: true
           
-      - name: build
-        uses: actions/checkout@v2
       - name: deploy
         uses: akhileshns/heroku-deploy@v3.12.14 # This is the action
         with:
