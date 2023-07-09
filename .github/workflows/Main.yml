@@ -3,8 +3,8 @@ name: Deploy
 on:
   push:
     branches:
-      - master
-      
+      - master    
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,7 +12,7 @@ jobs:
       - name: Tag
         id: autotagger
         uses: butlerlogic/action-autotag@stable
-        with:
+        env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       
       - name: Release
@@ -24,13 +24,14 @@ jobs:
         with:
           tag_name: ${{ steps.autotagger.outputs.tagname }}
           release_name: Version ${{ steps.autotagger.outputs.version }}
-          body: ${{ steps.autotagger.outputs.tagmessage }}
+          #body: ${{ steps.autotagger.outputs.tagmessage }}
           draft: false
           prerelease: true
           
       - name: build
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.14 # This is the action
+        uses: actions/checkout@v2
+      - name: deploy
+        uses: akhileshns/heroku-deploy@v3.12.14 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "nodebattleship" #Must be unique in Heroku
@@ -43,7 +44,7 @@ jobs:
         uses: author/action-rollback@stable
         with:
           # Using a known release ID
-          id: ${{ steps.create_release.id }}
+          #id: ${{ steps.create_release.id }}
           # Using a tag name
           tag: ${{ steps.autotagger.outputs.tagname }}
         env:
