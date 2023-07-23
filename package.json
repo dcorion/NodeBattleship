@@ -15,5 +15,8 @@
     "cypress-iframe": "^1.0.1",
     "cypress-mochawesome-reporter": "*",
     "eslint": "^8.43.0"
+  },
+  "scripts": {
+    "start": "node server.js"
   }
 }
