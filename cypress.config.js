@@ -1,4 +1,5 @@
 const { defineConfig } = require("cypress");
+require("cypress-mochawesome-reporter/plugin");
 
 module.exports = defineConfig({
   projectId: 'nzhz2a',
@@ -8,4 +9,11 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
+  reporter: 'mochawesome',
+  reporterOptions: {
+    reportDir: 'cypress/results',
+    overwrite: false,
+    html: true,
+    json: true
+  }
 });
