@@ -1,0 +1,20 @@
+name: DeployToTestSite
+
+on:
+  push:
+    branches:
+      - Staging
+  pull_request:
+    branches:
+      - Staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.14 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "seng540battleship-test" #Must be unique in Heroku
+          heroku_email: "rb00030@mix.wvu.edu"
