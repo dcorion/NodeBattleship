@@ -1,10 +1,10 @@
 describe('E2E multiplayer spec', () => {
     before(() => {
         // Start the server before the tests
-        cy.exec('node server.js', {failOnNonZeroExit: false, timeout: 20000}).then((result) =>
-            console.log(result)
-        );
-    });
+      //  cy.exec('node server.js', {failOnNonZeroExit: false, timeout: 70000}).then((result) =>
+       //     console.log(result)
+      //  );
+   // });
 
     const getIframeDocument = () => {
         return cy
@@ -34,6 +34,7 @@ describe('E2E multiplayer spec', () => {
         // TODO: should to verify
 
         // Send messages
+   
         cy.get('#message').type("GL;HF!");
         cy.get('#send-message').should('have.text', 'Send Message').click();
         cy.frameLoaded('[id="player2"]')

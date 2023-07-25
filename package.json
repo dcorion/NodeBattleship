@@ -17,6 +17,13 @@
     "eslint": "^8.43.0"
   },
   "scripts": {
-    "start": "node server.js"
-  }
+  "test": "jest",
+  "coverage": "jest --coverage",
+  "start": "node server.js"
+},
+"jest": {
+  "collectCoverage": true,
+  "coverageDirectory": "coverage",
+  "coverageReporters": ["lcov"]
+}
 }

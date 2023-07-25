@@ -7,8 +7,51 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: mocha
+        run: npm install --save-dev mocha mochawesome mochawesome-merge mochawesome-report-generator
+      - name: Install dependencies
+        run: npm install
+      - name: Start server
+        run:  node server.js &
+      - name: Wait for server to start
+        run: sleep 10 
       - name: Cypress run
         uses: cypress-io/github-action@v5
         timeout-minutes: 20000
         with:
           browser: chrome
+      - name: Slack Notification
+        if: ${{ always() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: nodebattleship-pipeline-results
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          #SLACK_ICON: 
+          SLACK_MESSAGE: ${{ job.status }}
+          SLACK_TITLE: Play through Test Results
+          SLACK_USERNAME: NotifyBot
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Set directory permissions
+        run: chmod -R +rwx cypress/results
+      
+      - name: Run Cypress tests
+        run: npx cypress run --reporter mochawesome --reporter-options reportDir=cypress/results,overwrite=false,html=true,json=true
+      - name: List directory contents
+        run: ls -la cypress/results/
+
+      - name: Merge Mochawesome reports
+        run: npx mochawesome-merge "cypress/results/*.json" > mochawesome.json
+
+      - name: Generate Mochawesome report
+        run: npx marge mochawesome.json -f report -o cypress/results
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            cypress/results/*.html
+            cypress/results/*.json
+
