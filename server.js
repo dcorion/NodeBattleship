@@ -10,7 +10,7 @@ var GameStatus = require('./app/gameStatus.js');
 var Settings = require('./app/settings.js');
 
 //var port = 8900;
-var port = app.listen(process.env.PORT || 3000, function(){
+var port = app.listen(process.env.PORT || 8900, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
 var users = {};
