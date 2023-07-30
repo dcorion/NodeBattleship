@@ -33,6 +33,14 @@ jobs:
           SLACK_TITLE: Play through Test Results
           SLACK_USERNAME: NotifyBot
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      -  name: Push to staging
+         if: success() # This will only run if all previous steps were successful
+         run: |
+          git checkout dev
+          git pull
+          git checkout staging
+          git merge dev
+          git push origin staging    
       - name: Set directory permissions
         run: chmod -R +rwx cypress/results
       
