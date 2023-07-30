@@ -51,7 +51,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: test-results
-          path: |
-            cypress/results/*.html
-            cypress/results/*.json
+          path: cypress/results/report.html
 
