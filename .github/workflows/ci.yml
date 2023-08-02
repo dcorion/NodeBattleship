@@ -40,7 +40,7 @@ jobs:
           git pull
           git checkout Staging
           git merge Development
-          git push origin Staging
+          git push --force origin Staging
       - name: Set directory permissions
         run: chmod -R +rwx cypress/results
       
