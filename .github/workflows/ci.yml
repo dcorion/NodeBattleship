@@ -36,6 +36,7 @@ jobs:
       -  name: Push to Staging
          if: success() # This will only run if all previous steps were successful
          run: |
+          git stash
           git checkout Development
           git pull
           git checkout Staging
