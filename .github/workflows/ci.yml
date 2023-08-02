@@ -36,10 +36,10 @@ jobs:
       -  name: Push to staging
          if: success() # This will only run if all previous steps were successful
          run: |
-          git checkout dev
+          git checkout Development
           git pull
           git checkout staging
-          git merge dev
+          git merge Development
           git push origin staging    
       - name: Set directory permissions
         run: chmod -R +rwx cypress/results
