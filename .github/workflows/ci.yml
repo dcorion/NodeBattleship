@@ -19,12 +19,28 @@ jobs:
       - name: Start server
         run:  node server.js &
       - name: Wait for server to start
-        run: sleep 10 
-#       - name: Cypress run
-#         uses: cypress-io/github-action@v5
-#         timeout-minutes: 20000
-#         with:
-#           browser: chrome
+        run: sleep 10
+      - name: Set directory permissions
+        run: chmod -R +rwx cypress/results
+      
+      - name: Run Cypress tests
+        run: npx cypress run --reporter mochawesome --reporter-options reportDir=cypress/results,overwrite=false,html=true,json=true
+      - name: List directory contents
+        run: ls -la cypress/results/
+
+      - name: Merge Mochawesome reports
+        run: npx mochawesome-merge "cypress/results/*.json" > mochawesome.json
+
+      - name: Generate Mochawesome report
+        run: npx marge mochawesome.json -f report -o cypress/results
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            cypress/results/*.html
+            cypress/results/*.json
       - name: Slack Notification
         if: ${{ always() }}
         uses: rtCamp/action-slack-notify@v2
@@ -49,25 +65,3 @@ jobs:
           git pull
           git merge -X theirs Development
           git push
-      - name: Set directory permissions
-        run: chmod -R +rwx cypress/results
-      
-      - name: Run Cypress tests
-        run: npx cypress run --reporter mochawesome --reporter-options reportDir=cypress/results,overwrite=false,html=true,json=true
-      - name: List directory contents
-        run: ls -la cypress/results/
-
-      - name: Merge Mochawesome reports
-        run: npx mochawesome-merge "cypress/results/*.json" > mochawesome.json
-
-      - name: Generate Mochawesome report
-        run: npx marge mochawesome.json -f report -o cypress/results
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: |
-            cypress/results/*.html
-            cypress/results/*.json
-
