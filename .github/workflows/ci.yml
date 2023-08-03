@@ -38,8 +38,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       -  name: Push to Staging
          if: success() # This will only run if all previous steps were successful
-      - name: Set Git config
-        run: |
+         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
          
