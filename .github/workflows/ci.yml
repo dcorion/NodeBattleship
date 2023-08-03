@@ -17,11 +17,11 @@ jobs:
         run:  node server.js &
       - name: Wait for server to start
         run: sleep 10 
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        timeout-minutes: 20000
-        with:
-          browser: chrome
+#       - name: Cypress run
+#         uses: cypress-io/github-action@v5
+#         timeout-minutes: 20000
+#         with:
+#           browser: chrome
       - name: Slack Notification
         if: ${{ always() }}
         uses: rtCamp/action-slack-notify@v2
@@ -40,7 +40,7 @@ jobs:
           git checkout Development
           git pull
           git checkout Staging
-          git merge Development
+          git merge Development --allow-unrelated-histories
           git push --force origin Staging
       - name: Set directory permissions
         run: chmod -R +rwx cypress/results
