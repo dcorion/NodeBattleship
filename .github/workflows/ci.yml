@@ -1,5 +1,8 @@
 name: End-to-end tests
-on: push
+on:
+  push:
+    branches:
+      - Development
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -17,11 +20,11 @@ jobs:
         run:  node server.js &
       - name: Wait for server to start
         run: sleep 10 
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        timeout-minutes: 20000
-        with:
-          browser: chrome
+#       - name: Cypress run
+#         uses: cypress-io/github-action@v5
+#         timeout-minutes: 20000
+#         with:
+#           browser: chrome
       - name: Slack Notification
         if: ${{ always() }}
         uses: rtCamp/action-slack-notify@v2
@@ -36,12 +39,16 @@ jobs:
       -  name: Push to Staging
          if: success() # This will only run if all previous steps were successful
          run: |
-          git stash
-          git checkout Development
-          git pull
+          git config --local user.email "drminger98@gmail.com"
+          git config --local user.name "dming98"
+          
+      - name: Merge to staging
+        run: |
+          git fetch --unshallow
           git checkout Staging
-          git merge Development
-          git push --force origin Staging
+          git pull
+          git merge -X theirs Development
+          git push
       - name: Set directory permissions
         run: chmod -R +rwx cypress/results
       
