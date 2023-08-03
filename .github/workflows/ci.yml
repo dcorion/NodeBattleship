@@ -1,5 +1,8 @@
 name: End-to-end tests
-on: push
+on:
+  push:
+    branches:
+      - Development
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -36,12 +39,11 @@ jobs:
       -  name: Push to Staging
          if: success() # This will only run if all previous steps were successful
          run: |
-          git stash
-          git checkout Development
-          git pull
+          git fetch --unshallow
           git checkout Staging
-          git merge Development --allow-unrelated-histories
-          git push --force origin Staging
+          git pull
+          git merge --no-ff Development
+          git push
       - name: Set directory permissions
         run: chmod -R +rwx cypress/results
       
